@@ -17,11 +17,14 @@ for meth in methods:
     else:
         top_left = max_loc
     bottom_right = (top_left[0] + h, top_left[1] + w)
-    cv.rectangle(img,top_left, bottom_right, 255, 2)
     cropped_image = img[top_left[1]:bottom_right[1],top_left[0]:bottom_right[0]]
-    plt.subplot(122), plt.imshow(cropped_image)
+    plt.axis("off")
+    plt.subplot(122)
     plt.title('Cropped'), plt.xticks([]), plt.yticks([])
-    plt.subplot(121), plt.imshow(img)
+    plt.imshow(cv.cvtColor(cropped_image, cv.COLOR_BGR2RGB))
+    plt.subplot(121)
+    cv.rectangle(img, top_left, bottom_right, (0, 0, 255), 8)
+    plt.imshow(cv.cvtColor(img, cv.COLOR_BGR2RGB))
     plt.title('Detected Point'), plt.xticks([]), plt.yticks([])
     plt.suptitle(meth)
     plt.show()

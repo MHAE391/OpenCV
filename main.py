@@ -1,19 +1,27 @@
-import numpy as np
-import cv2 as cv
-
-cap=cv.VideoCapture(0)
-template = cv.imread('fullLogo.jpeg')
+import cv2
+cap = cv2.VideoCapture('vv.mp4')
+template = cv2.imread('fullLogo.jpeg')
 w, h = template.shape[:2]
-while True:
-    ret,frame=cap.read()
-    res = cv.matchTemplate(frame, template, cv.TM_CCOEFF_NORMED)
-    min_val, max_val, min_loc, max_loc = cv.minMaxLoc(res)
+if (cap.isOpened()== False):
+  print("Error opening video stream or file")
+
+while(cap.isOpened()):
+  ret, frame = cap.read()
+  if ret == True:
+
+    frame=cv2.rotate(frame, cv2.ROTATE_180)
+    res = cv2.matchTemplate(frame, template, cv2.TM_CCORR_NORMED)
+    min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
     top_left = max_loc
     bottom_right = (top_left[0] + h, top_left[1] + w)
-    cv.rectangle(frame, top_left, bottom_right, (0, 0, 255), 4)
-    cv.imshow('frame',frame)
-    if cv.waitKey(1) == ord('q'):
-        break
+    cv2.rectangle(frame, top_left, bottom_right, (0, 255, 0), 2)
+    cv2.imshow('Frame',frame)
+
+    if cv2.waitKey(25) & 0xFF == ord('q'):
+      break
+
+  else:
+    break
 
 cap.release()
-cv.destroyAllWindows()
+cv2.destroyAllWindows()
